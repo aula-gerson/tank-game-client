@@ -22,7 +22,6 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
   
   private HashSet<Tanque> tanques;
   private Tanque apontado;
-  private Tiro tiro;
   private Timer contador;
   private int largura, altura;
   
@@ -30,7 +29,6 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
     this.largura = largura; 
     this.altura = altura;
     this.tanques = new HashSet<Tanque>();
-    this.tiro = new Tiro(-10, -10, 0, null,-1);
     this.contador = new Timer(40, this);
     this.contador.start();
     addMouseListener(this);
@@ -65,8 +63,12 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
     g2d.setColor(new Color(220,220,220));
     for(int _largura=0;_largura<=largura;_largura+=20) g2d.drawLine(_largura,0,_largura,altura);
     for(int _altura=0;_altura<=altura;_altura+=20) g2d.drawLine(0,_altura,largura,_altura);
-    for(Tanque t:tanques) t.draw(g2d);
-    tiro.draw(g2d);
+    for(Tanque tanque:tanques) {
+      tanque.autoColisao(tanques);
+      tanque.draw(g2d);
+      tanque.getTiro().colisao(tanques);
+      tanque.getTiro().draw(g2d);
+    }
   }
 
   public void mouseClicked(MouseEvent e) {
@@ -90,67 +92,25 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
   public void mouseReleased(MouseEvent e) { }
   
   public void actionPerformed(ActionEvent e) {
-    for(Tanque t:tanques){
-      t.mover();
-      t.calculaTempo();
+    for(Tanque tanque : tanques){
+      tanque.mover();
+      tanque.getTiro().mover();
+      tanque.calculaTempo();
     }
-    colisao();
-    tiro.mover();
     repaint();
   }
 
-  public void colisao() {
-    if(tiro.estaAtivo){
-      for(Tanque t : tanques){
-        if(t.getId() != tiro.getId()){ 
-          double dist = Math.sqrt(Math.pow(tiro.x - t.x, 2) + Math.pow(tiro.y - t.y, 2));
-          if(dist <= 20){
-            /*Distancia de acerto*/
-            tiro.x = -10;
-            tiro.y = -10;
-            tanques.remove(t);
-            tiro.estaAtivo = false;
-            break;
-          }
-        }
-      }
-    }
-    for(Tanque t : tanques) autoColisao(t);
-  }
-
-  public void autoColisao(Tanque tanque) {
-    for(Tanque t : tanques){
-      /*verifica a distancia para checar colisão entre os  tanques*/
-      if(tanque.getId() != t.getId()){
-        double dist = Math.sqrt(Math.pow(tanque.x - t.x, 2) + Math.pow(tanque.y - t.y, 2));
-        if(dist <= 30){
-          /*Colisão entre tanques*/
-          if(t.velocidade > 0){
-            t.velocidade *= -1;
-            t.girarAntiHorario(7);
-          }
-          else{
-            t.velocidade = 2;
-            t.girarHorario(7);
-          }
-        }
-      }
-    }
-  }
-  
   public void keyPressed(KeyEvent e) {
-    for(Tanque t:tanques) {
-      t.setEstaAtivo(false);
-      if(t == apontado) {
-        t.setEstaAtivo(true);
+    for(Tanque tanque:tanques) {
+      tanque.setEstaAtivo(false);
+      if(tanque == apontado) {
+        tanque.setEstaAtivo(true);
         switch(e.getKeyCode()){
-          case KeyEvent.VK_A: t.girarAntiHorario(10); break;
-          case KeyEvent.VK_D: t.girarHorario(10); break;
-          case KeyEvent.VK_W: t.aumentarVelocidade(); break;
-          case KeyEvent.VK_S : t.diminuirVelocidade(); break;
-          case KeyEvent.VK_SPACE: {
-            atirar(t.getId());
-          }
+          case KeyEvent.VK_A: tanque.girarAntiHorario(10); break;
+          case KeyEvent.VK_D: tanque.girarHorario(10); break;
+          case KeyEvent.VK_W: tanque.aumentarVelocidade(); break;
+          case KeyEvent.VK_S : tanque.diminuirVelocidade(); break;
+          case KeyEvent.VK_SPACE: tanque.atirar();
           break;
         }
         break;
@@ -164,19 +124,6 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
 
   @Override
   public void keyTyped(KeyEvent e) { }
-
-  public void atirar(int id) {
-    for(Tanque t:tanques){
-      if(t.estaAtivo && !tiro.estaAtivo) {
-        tiro.x = t.x;
-        tiro.y = t.y;
-        tiro.angulo = t.angulo;
-        tiro.cor = Color.RED;
-        tiro.setId(t.getId());
-        tiro.estaAtivo = true;
-      }
-    }
-  }
 
   public static void main(String args[]) {
     Arena arena = new Arena(640,480);

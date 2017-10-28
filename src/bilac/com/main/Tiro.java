@@ -3,11 +3,23 @@ package bilac.com.main;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.util.HashSet;
 
-public class Tiro extends Tanque {
+public class Tiro {
   
-  public Tiro(double x, double y, double a, Color cor, int id) {
-    super(x, y, a, cor, id);
+  protected Tanque atirador;
+  protected Color cor;
+  protected double x, y;
+  protected double angulo;
+  protected int anguloc, cont = 0;
+  protected double velocidade;
+  protected boolean estaAtivo;
+  
+  public Tiro(Tanque atirador, double x, double y, double a) {
+    this.atirador = atirador;
+    this.x = x;
+    this.y = y;
+    this.angulo = a;
   }
 
   public void mover() {
@@ -32,6 +44,23 @@ public class Tiro extends Tanque {
     g2d.fillRect(-3, -3, 4, 4);    
     //Aplicamos o sistema de coordenadas
     g2d.setTransform(antes);
+  }
+  
+  public void colisao(HashSet<Tanque> tanquesInimigos) {
+    if(estaAtivo){
+      for(Tanque tanqueInimigo : tanquesInimigos) {
+        double dist = Math.sqrt(Math.pow(this.x - tanqueInimigo.x, 2) + Math.pow(this.y - tanqueInimigo.y, 2));
+        if(tanqueInimigo != this.atirador) {
+          if(dist <= 20){
+            /*Distancia de acerto*/
+            this.x = -10;
+            this.y = -10;
+            estaAtivo = false;
+            tanqueInimigo.estaVivo = false;
+          }
+        }
+      }
+    }
   }
   
 }
