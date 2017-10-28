@@ -4,23 +4,21 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-public class Tiro extends Tanque{
+public class Tiro extends Tanque {
   
   public Tiro(double x, double y, double a, Color cor, int id) {
     super(x, y, a, cor, id);
-    
   }
-  public void mover(){
+
+  public void mover() {
     if(estaAtivo){
       x = x + Math.sin(Math.toRadians(angulo)) * 10;
       y = y - Math.cos(Math.toRadians(angulo)) * 10;
     }
-    if(x < -5 || x >645 || y<-5 || y> 485) {
-      estaAtivo = false;
-    }
-    
+    if(x < -5 || x >645 || y<-5 || y> 485) estaAtivo = false;
   }
-  public void draw(Graphics2D g2d){
+
+  public void draw(Graphics2D g2d) {
     //Armazenamos o sistema de coordenadas original.
     AffineTransform antes = g2d.getTransform();
     //Criamos um sistema de coordenadas para o tanque.
@@ -31,10 +29,9 @@ public class Tiro extends Tanque{
     g2d.transform(depois);
     //Desenhamos o missil
     g2d.setColor(cor);
-    g2d.fillRect(-3, -3, 4, 4);
-    
+    g2d.fillRect(-3, -3, 4, 4);    
     //Aplicamos o sistema de coordenadas
     g2d.setTransform(antes);
   }
-
+  
 }
