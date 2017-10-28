@@ -25,7 +25,6 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
   private Tiro tiro;
   private Timer contador;
   private int largura, altura;
-  private long agora;
   
   public Arena(int largura,int altura){
     this.largura = largura; 
@@ -34,7 +33,6 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
     this.tiro = new Tiro(-10, -10, 0, null,-1);
     this.contador = new Timer(40, this);
     this.contador.start();
-    this.agora = 1;
     addMouseListener(this);
     addKeyListener(this);
     setFocusable(true);
@@ -114,13 +112,6 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
             tiro.estaAtivo = false;
             break;
           }
-          /*Tanque detecta o míssil e tenta se esquivar*/
-          if(dist < 100) { 
-            t.setTempo(System.currentTimeMillis());
-            if(agora%2 == 0) t.girarAntiHorario(7);
-            else t.girarHorario(7);
-            t.velocidade = 6;
-          }
         }
       }
     }
@@ -143,13 +134,6 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
             t.girarHorario(7);
           }
         }
-        if(dist < 80 &&  tanque.estaAtivo){
-          /*tanque inimigo tenta fugir*/
-          t.setTempo(System.currentTimeMillis());
-          if(agora%2 == 0) t.girarAntiHorario(5);
-          else t.girarHorario(5);
-          t.velocidade = 6;
-        }
       }
     }
   }
@@ -166,7 +150,6 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
           case KeyEvent.VK_RIGHT: t.girarHorario(3); break;
           case KeyEvent.VK_SPACE: {
             atirar(t.getId());
-            agora = System.currentTimeMillis();
           }
           break;
         }
