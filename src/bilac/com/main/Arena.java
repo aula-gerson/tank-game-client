@@ -144,10 +144,10 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
       if(t == apontado) {
         t.setEstaAtivo(true);
         switch(e.getKeyCode()){
-          case KeyEvent.VK_LEFT: t.girarAntiHorario(3); break;
-          case KeyEvent.VK_UP: t.aumentarVelocidade(); break;
-          case KeyEvent.VK_DOWN : t.diminuirVelocidade(); break;
-          case KeyEvent.VK_RIGHT: t.girarHorario(3); break;
+          case KeyEvent.VK_A: t.girarAntiHorario(10); break;
+          case KeyEvent.VK_D: t.girarHorario(10); break;
+          case KeyEvent.VK_W: t.aumentarVelocidade(); break;
+          case KeyEvent.VK_S : t.diminuirVelocidade(); break;
           case KeyEvent.VK_SPACE: {
             atirar(t.getId());
           }
@@ -168,8 +168,8 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
   public void atirar(int id) {
     for(Tanque t:tanques){
       if(t.estaAtivo && !tiro.estaAtivo) {
-        tiro.x = t.x + 50;
-        tiro.y = t.y + 50;
+        tiro.x = t.x;
+        tiro.y = t.y;
         tiro.angulo = t.angulo;
         tiro.cor = Color.RED;
         tiro.setId(t.getId());
