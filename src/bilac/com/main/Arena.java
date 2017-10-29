@@ -18,16 +18,16 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 @SuppressWarnings("serial")
-public class Arena extends JComponent implements MouseListener, ActionListener,KeyListener {
+public class Arena extends JComponent implements MouseListener, ActionListener, KeyListener {
   
+  private static final int LARGURA_ARENA = 640;
+  private static final int ALTURA_ARENA = 480;
+
   private HashSet<Tanque> tanques;
-  private Tanque apontado;
+  private Tanque tanqueSelecionado;
   private Timer contador;
-  private int largura, altura;
   
-  public Arena(int largura,int altura){
-    this.largura = largura; 
-    this.altura = altura;
+  public Arena(){
     this.tanques = new HashSet<Tanque>();
     this.contador = new Timer(40, this);
     this.contador.start();
@@ -49,7 +49,7 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
   }
 
   public Dimension getPreferredSize() {
-    return new Dimension(largura, altura);
+    return new Dimension(LARGURA_ARENA, ALTURA_ARENA);
   }
 
   @Override
@@ -59,25 +59,29 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
     RenderingHints.VALUE_ANTIALIAS_ON);
     g2d.setColor(new Color(245,245,255));
-    g2d.fillRect(0,0,largura,altura);
+    g2d.fillRect(0,0, LARGURA_ARENA, ALTURA_ARENA);
     g2d.setColor(new Color(220,220,220));
-    for(int _largura=0;_largura<=largura;_largura+=20) g2d.drawLine(_largura,0,_largura,altura);
-    for(int _altura=0;_altura<=altura;_altura+=20) g2d.drawLine(0,_altura,largura,_altura);
+    // Cria gade de fundo
+    for(int largura = 0; largura <= LARGURA_ARENA; largura += 20)
+      g2d.drawLine(largura, 0, largura, ALTURA_ARENA);
+    for(int altura=0; altura <= ALTURA_ARENA; altura+=20) 
+      g2d.drawLine(0, altura, LARGURA_ARENA, altura);
     for(Tanque tanque:tanques) {
-      tanque.autoColisao(tanques);
+      tanque.verificarColisaoComOsTanques(tanques);
       tanque.draw(g2d);
-      tanque.getTiro().colisao(tanques);
+      Tanque tanqueAtingido = tanque.getTiro().verificarColisaoComOsTanques(tanques);
+      tanques.remove(tanqueAtingido);
       tanque.getTiro().draw(g2d);
     }
   }
 
   public void mouseClicked(MouseEvent e) {
-    for(Tanque t:tanques) t.setEstaAtivo(false);
-    for(Tanque t:tanques) {
-      boolean clicado = t.getRectEnvolvente().contains(e.getX(),e.getY());
-      if (clicado){
-        t.setEstaAtivo(true);
-        apontado= t ;
+    for(Tanque tanque : tanques) tanque.setEstaAtivo(false);
+    for(Tanque tanque : tanques) {
+      boolean tanqueClicado = tanque.pegarAreaClicavelDoTanque().contains(e.getX(), e.getY());
+      if (tanqueClicado){
+        tanque.setEstaAtivo(true);
+        tanqueSelecionado= tanque;
       }
     }
     repaint();
@@ -101,13 +105,13 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
   }
 
   public void keyPressed(KeyEvent e) {
-    for(Tanque tanque:tanques) {
+    for(Tanque tanque : tanques) {
       tanque.setEstaAtivo(false);
-      if(tanque == apontado) {
+      if(tanque == tanqueSelecionado) {
         tanque.setEstaAtivo(true);
         switch(e.getKeyCode()){
-          case KeyEvent.VK_A: tanque.girarAntiHorario(10); break;
-          case KeyEvent.VK_D: tanque.girarHorario(10); break;
+          case KeyEvent.VK_A: tanque.girar(-10); break;
+          case KeyEvent.VK_D: tanque.girar(10); break;
           case KeyEvent.VK_W: tanque.aumentarVelocidade(); break;
           case KeyEvent.VK_S : tanque.diminuirVelocidade(); break;
           case KeyEvent.VK_SPACE: tanque.atirar();
@@ -126,15 +130,15 @@ public class Arena extends JComponent implements MouseListener, ActionListener,K
   public void keyTyped(KeyEvent e) { }
 
   public static void main(String args[]) {
-    Arena arena = new Arena(640,480);
-    arena.adicionaTanque(new Tanque(400,50,180,Color.BLUE,1));
-    arena.adicionaTanque(new Tanque(400,200,0,Color.RED,2));
-    arena.adicionaTanque(new Tanque(400,300,270,Color.GREEN,3));
-    arena.adicionaTanque(new Tanque(200,50,90,Color.YELLOW,4));
-    arena.adicionaTanque(new Tanque(100,120,270,Color.GRAY,5));
-    arena.adicionaTanque(new Tanque(180,307,180,Color.WHITE,6));
-    arena.adicionaTanque(new Tanque(520,208,23,Color.CYAN, 7));
-    arena.adicionaTanque(new Tanque(300,300,47,Color.ORANGE,8));
+    Arena arena = new Arena();
+    arena.adicionaTanque(new Tanque(400,50,180,Color.BLUE));
+    arena.adicionaTanque(new Tanque(400,200,0,Color.RED));
+    arena.adicionaTanque(new Tanque(400,300,270,Color.GREEN));
+    arena.adicionaTanque(new Tanque(200,50,90,Color.YELLOW));
+    arena.adicionaTanque(new Tanque(100,120,270,Color.GRAY));
+    arena.adicionaTanque(new Tanque(180,307,180,Color.WHITE));
+    arena.adicionaTanque(new Tanque(520,208,23,Color.CYAN));
+    arena.adicionaTanque(new Tanque(300,300,47,Color.ORANGE));
     
     JFrame janela = new JFrame("JTank");
     janela.getContentPane().add(arena);

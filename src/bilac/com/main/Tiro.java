@@ -7,19 +7,20 @@ import java.util.HashSet;
 
 public class Tiro {
   
-  protected Tanque atirador;
+  protected Tanque tanque;
   protected Color cor;
+  
   protected double x, y;
   protected double angulo;
   protected int anguloc, cont = 0;
   protected double velocidade;
   protected boolean estaAtivo;
   
-  public Tiro(Tanque atirador, double x, double y, double a) {
-    this.atirador = atirador;
+  public Tiro(Tanque tanque, double x, double y, double angulo) {
+    this.tanque = tanque;
     this.x = x;
     this.y = y;
-    this.angulo = a;
+    this.angulo = angulo;
   }
 
   public void mover() {
@@ -46,21 +47,22 @@ public class Tiro {
     g2d.setTransform(antes);
   }
   
-  public void colisao(HashSet<Tanque> tanquesInimigos) {
+  public Tanque verificarColisaoComOsTanques(HashSet<Tanque> tanques) {
     if(estaAtivo){
-      for(Tanque tanqueInimigo : tanquesInimigos) {
-        double dist = Math.sqrt(Math.pow(this.x - tanqueInimigo.x, 2) + Math.pow(this.y - tanqueInimigo.y, 2));
-        if(tanqueInimigo != this.atirador) {
+      for(Tanque tanque : tanques) {
+        double dist = Math.sqrt(Math.pow(this.x - tanque.x, 2) + Math.pow(this.y - tanque.y, 2));
+        if(tanque != this.tanque) {
           if(dist <= 20){
             /*Distancia de acerto*/
             this.x = -10;
             this.y = -10;
             estaAtivo = false;
-            tanqueInimigo.estaVivo = false;
+            return tanque;
           }
         }
       }
     }
+    return null;
   }
   
 }
