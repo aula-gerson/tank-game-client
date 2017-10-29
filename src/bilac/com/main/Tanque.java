@@ -11,15 +11,13 @@ import java.util.HashSet;
 
 public class Tanque {
 
-  protected Color cor;
+  private Color cor;
   private Tiro tiro;
   
-  protected double x, y;
-  protected double angulo;
-  protected int anguloc, cont = 0;
-  protected double velocidade;
-  protected boolean estaAtivo;
-  private long tempo;
+  private double x, y;
+  private double angulo;
+  private double velocidade;
+  private boolean estaAtivo;
   
   public Tanque(double x, double y, double angulo, Color cor) {
     this.x = x; 
@@ -32,47 +30,71 @@ public class Tanque {
   }
 
   public void calculaTempo() {
-    if(!estaAtivo) {
-      if(velocidade > 0) velocidade = 2;
-      else velocidade = -2;
+    if(!this.estaAtivo) {
+      if(this.velocidade > 0) this.velocidade = 2;
+      else this.velocidade = -2;
     }
   }
 
-  public long getTempo() {
-    return tempo;
-  }
-
-  public void setTempo(long agora) {
-    this.tempo = agora; 
-  }
-
   public void aumentarVelocidade() {
-    if(velocidade < 5) velocidade++;
-  }
-
-  public void diminuirVelocidade() {
-    if(velocidade > 0) velocidade--;
+    if(this.velocidade < 5) this.velocidade++;
   }
   
+  public void diminuirVelocidade() {
+    if(this.velocidade > 0) this.velocidade--;
+  }
+    
   public void girar(double angulo) {
     this.angulo += angulo;
-    if(angulo >= 360) angulo = angulo - 360;
+    if(this.angulo >= 360) this.angulo = this.angulo - 360;
   }
-
+  
   public void mover() {
-    x = x + Math.sin(Math.toRadians(angulo)) * velocidade;
-    y = y - Math.cos(Math.toRadians(angulo)) * velocidade;
+    this.x += Math.sin(Math.toRadians(this.angulo)) * this.velocidade;
+    this.y -= Math.cos(Math.toRadians(this.angulo)) * this.velocidade;
 
     /* TODO: A forma de manter o tanque dentro da tela causava alguns bugs.
      * Então eu simplifiquei essa operação, mas ela precisa ser melhorada depois. */
-    if (x <= 30 || y <= 30 || y >= 450 || x >= 610)
-      velocidade *= -1;
+    if (this.x <= 30 || this.y <= 30 || this.y >= 450 || this.x >= 610)
+      this.velocidade *= -1;
   }
   
   public void setEstaAtivo(boolean estaAtivo) {
     this.estaAtivo = estaAtivo;
   }
+  
+  public Shape pegarAreaClicavelDoTanque() {
+    AffineTransform at = new AffineTransform();
+    at.translate(this.x, this.y);
+    at.rotate(Math.toRadians(this.angulo));
+    Rectangle rect = new Rectangle(-24, -32, 48, 55);
+    return at.createTransformedShape(rect);
+  }
 
+  public void verificarColisaoComOsTanques(HashSet<Tanque> tanques) {
+    for(Tanque tanque : tanques) {
+      if(tanque != this) {
+        /*verifica a distancia para checar colisão entre os  tanques*/
+        double distanciaEntreOTanque = Math.sqrt(Math.pow(tanque.x - this.x, 2) + Math.pow(tanque.y - this.y, 2));
+        /*Colisão entre tanques*/
+        if(distanciaEntreOTanque <= 30){
+          if(this.velocidade > 0) this.velocidade = 2;
+          this.velocidade *= -1;
+          girar(10);
+        }
+      }
+    }
+  }
+  
+  public void atirar() {
+    if(!this.tiro.isEstaAtivo()) {
+      this.tiro.setX(this.x);
+      this.tiro.setY(this.y);
+      this.tiro.setAngulo(this.angulo);
+      this.tiro.setEstaAtivo(true);
+    }
+  }
+  
   public void draw(Graphics2D g2d) {
     //Armazenamos o sistema de coordenadas original.
     AffineTransform antes = g2d.getTransform();
@@ -101,7 +123,7 @@ public class Tanque {
     g2d.drawRect(-3, -25, 6, 25);
     //Se o tanque estiver ativo
     //Desenhamos uma margem
-    if(estaAtivo) {
+    if(this.estaAtivo) {
       g2d.setColor(new Color(120,120,120));
       Stroke linha = g2d.getStroke();
       g2d.setStroke(new BasicStroke(1f,BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,0, new float[]{8},0));
@@ -111,39 +133,6 @@ public class Tanque {
     //Aplicamos o sistema de coordenadas
     g2d.setTransform(antes);
   }
-  
-  public Shape pegarAreaClicavelDoTanque() {
-    AffineTransform at = new AffineTransform();
-    at.translate(x, y);
-    at.rotate(Math.toRadians(angulo));
-    Rectangle rect = new Rectangle(-24, -32, 48, 55);
-    return at.createTransformedShape(rect);
-  }
-  
-  public void verificarColisaoComOsTanques(HashSet<Tanque> tanques) {
-    for(Tanque tanque : tanques) {
-      if(tanque != this) {
-        /*verifica a distancia para checar colisão entre os  tanques*/
-        double distanciaEntreOTanque = Math.sqrt(Math.pow(tanque.x - this.x, 2) + Math.pow(tanque.y - this.y, 2));
-        /*Colisão entre tanques*/
-        if(distanciaEntreOTanque <= 30){
-          if(this.velocidade > 0) this.velocidade = 2;
-          this.velocidade *= -1;
-          this.girar(10);
-        }
-      }
-    }
-  }
-  
-  public void atirar() {
-    if(!getTiro().estaAtivo) {
-      getTiro().x = this.x;
-      getTiro().y = this.y;
-      getTiro().angulo = this.angulo;
-      getTiro().cor = Color.RED;
-      getTiro().estaAtivo = true;
-    }
-  }
 
   public Tiro getTiro() {
     return tiro;
@@ -151,6 +140,50 @@ public class Tanque {
 
   public void setTiro(Tiro tiro) {
     this.tiro = tiro;
+  }
+
+  public Color getCor() {
+    return cor;
+  }
+
+  public void setCor(Color cor) {
+    this.cor = cor;
+  }
+
+  public double getX() {
+    return x;
+  }
+
+  public void setX(double x) {
+    this.x = x;
+  }
+
+  public double getY() {
+    return y;
+  }
+
+  public void setY(double y) {
+    this.y = y;
+  }
+
+  public double getAngulo() {
+    return angulo;
+  }
+
+  public void setAngulo(double angulo) {
+    this.angulo = angulo;
+  }
+
+  public double getVelocidade() {
+    return velocidade;
+  }
+
+  public void setVelocidade(double velocidade) {
+    this.velocidade = velocidade;
+  }
+
+  public boolean isEstaAtivo() {
+    return estaAtivo;
   }
   
 }

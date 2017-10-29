@@ -37,7 +37,7 @@ public class Arena extends JComponent implements MouseListener, ActionListener, 
   }
   
   public void adicionaTanque(Tanque t) {
-    tanques.add(t);
+    this.tanques.add(t);
   }
   
   public Dimension getMaximumSize() {
@@ -66,7 +66,7 @@ public class Arena extends JComponent implements MouseListener, ActionListener, 
       g2d.drawLine(largura, 0, largura, ALTURA_ARENA);
     for(int altura=0; altura <= ALTURA_ARENA; altura+=20) 
       g2d.drawLine(0, altura, LARGURA_ARENA, altura);
-    for(Tanque tanque:tanques) {
+    for(Tanque tanque : this.tanques) {
       tanque.verificarColisaoComOsTanques(tanques);
       tanque.draw(g2d);
       Tanque tanqueAtingido = tanque.getTiro().verificarColisaoComOsTanques(tanques);
@@ -76,8 +76,8 @@ public class Arena extends JComponent implements MouseListener, ActionListener, 
   }
 
   public void mouseClicked(MouseEvent e) {
-    for(Tanque tanque : tanques) tanque.setEstaAtivo(false);
-    for(Tanque tanque : tanques) {
+    for(Tanque tanque : this.tanques) tanque.setEstaAtivo(false);
+    for(Tanque tanque : this.tanques) {
       boolean tanqueClicado = tanque.pegarAreaClicavelDoTanque().contains(e.getX(), e.getY());
       if (tanqueClicado){
         tanque.setEstaAtivo(true);
@@ -96,7 +96,7 @@ public class Arena extends JComponent implements MouseListener, ActionListener, 
   public void mouseReleased(MouseEvent e) { }
   
   public void actionPerformed(ActionEvent e) {
-    for(Tanque tanque : tanques){
+    for(Tanque tanque : this.tanques){
       tanque.mover();
       tanque.getTiro().mover();
       tanque.calculaTempo();
@@ -105,7 +105,7 @@ public class Arena extends JComponent implements MouseListener, ActionListener, 
   }
 
   public void keyPressed(KeyEvent e) {
-    for(Tanque tanque : tanques) {
+    for(Tanque tanque : this.tanques) {
       tanque.setEstaAtivo(false);
       if(tanque == tanqueSelecionado) {
         tanque.setEstaAtivo(true);

@@ -7,28 +7,26 @@ import java.util.HashSet;
 
 public class Tiro {
   
-  protected Tanque tanque;
-  protected Color cor;
+  private Tanque tanque;
   
-  protected double x, y;
-  protected double angulo;
-  protected int anguloc, cont = 0;
-  protected double velocidade;
-  protected boolean estaAtivo;
+  private double x, y;
+  private double angulo;
+  private boolean estaAtivo;
   
   public Tiro(Tanque tanque, double x, double y, double angulo) {
     this.tanque = tanque;
     this.x = x;
     this.y = y;
     this.angulo = angulo;
+    this.estaAtivo = false;
   }
 
   public void mover() {
-    if(estaAtivo){
-      x = x + Math.sin(Math.toRadians(angulo)) * 10;
-      y = y - Math.cos(Math.toRadians(angulo)) * 10;
+    if(this.estaAtivo){
+      this.x += Math.sin(Math.toRadians(this.angulo)) * 10;
+      this.y -= Math.cos(Math.toRadians(this.angulo)) * 10;
     }
-    if(x < -5 || x >645 || y<-5 || y> 485) estaAtivo = false;
+    if(this.x < -5 || this.x >645 || this.y < -5 || this.y > 485) this.estaAtivo = false;
   }
 
   public void draw(Graphics2D g2d) {
@@ -36,33 +34,73 @@ public class Tiro {
     AffineTransform antes = g2d.getTransform();
     //Criamos um sistema de coordenadas para o tanque.
     AffineTransform depois = new AffineTransform();
-    depois.translate(x, y);
-    depois.rotate(Math.toRadians(angulo));
+    depois.translate(this.x, this.y);
+    depois.rotate(Math.toRadians(this.angulo));
     //Aplicamos o sistema de coordenadas.
     g2d.transform(depois);
     //Desenhamos o missil
-    g2d.setColor(cor);
-    g2d.fillRect(-3, -3, 4, 4);    
+    g2d.setColor(Color.RED);
+    g2d.fillRect(-3, -3, 4, 4);
     //Aplicamos o sistema de coordenadas
     g2d.setTransform(antes);
   }
   
   public Tanque verificarColisaoComOsTanques(HashSet<Tanque> tanques) {
-    if(estaAtivo){
+    if(this.estaAtivo){
       for(Tanque tanque : tanques) {
-        double dist = Math.sqrt(Math.pow(this.x - tanque.x, 2) + Math.pow(this.y - tanque.y, 2));
+        double dist = Math.sqrt(Math.pow(this.x - tanque.getX(), 2) + Math.pow(this.y - tanque.getY(), 2));
         if(tanque != this.tanque) {
           if(dist <= 20){
             /*Distancia de acerto*/
             this.x = -10;
             this.y = -10;
-            estaAtivo = false;
+            this.estaAtivo = false;
             return tanque;
           }
         }
       }
     }
     return null;
+  }
+
+  public Tanque getTanque() {
+    return tanque;
+  }
+
+  public void setTanque(Tanque tanque) {
+    this.tanque = tanque;
+  }
+
+  public double getX() {
+    return x;
+  }
+
+  public void setX(double x) {
+    this.x = x;
+  }
+
+  public double getY() {
+    return y;
+  }
+
+  public void setY(double y) {
+    this.y = y;
+  }
+
+  public double getAngulo() {
+    return angulo;
+  }
+
+  public void setAngulo(double angulo) {
+    this.angulo = angulo;
+  }
+
+  public boolean isEstaAtivo() {
+    return estaAtivo;
+  }
+
+  public void setEstaAtivo(boolean estaAtivo) {
+    this.estaAtivo = estaAtivo;
   }
   
 }
