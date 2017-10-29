@@ -11,11 +11,14 @@ public class Conexao extends Thread {
   @Override public void run() {
     super.run();
     try {
-      socket = new Socket("", 4811);
+      this.socket = new Socket("", 4811);
       PrintWriter writer = new PrintWriter(socket.getOutputStream());
       Scanner scanner = new Scanner(socket.getInputStream());
-      
+      String msg;
+      while ((msg = scanner.nextLine()) != null) {
+         System.out.println(msg);
+      }
     } catch(Exception e){ System.err.println(e.getMessage()); }
   }
-  
+    
 }
