@@ -10,6 +10,7 @@ import java.util.HashSet;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import bilac.com.conexao.Conexao;
 import bilac.com.listener.EscutaClick;
 import bilac.com.listener.EscutaTeclado;
 import bilac.com.listener.Render;
@@ -24,6 +25,7 @@ public class Arena extends JComponent {
   private Tanque tanqueSelecionado;
   
   public Arena(){
+    new Conexao().start();
     this.tanques = new HashSet<Tanque>();
     addMouseListener(new EscutaClick(this));
     addKeyListener(new EscutaTeclado(this));
