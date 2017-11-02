@@ -36,8 +36,8 @@ public class Arena extends JComponent {
     setFocusable(true);
   }
   
-  public void adicionaTanque(Tanque t) {
-    this.tanques.add(t);
+  public void adicionaTanque() {
+    this.tanques.add(new Tanque(400,50,180,Color.BLUE));
   }
   
   public Dimension getMaximumSize() {
@@ -79,15 +79,6 @@ public class Arena extends JComponent {
 
   public static void main(String args[]) {
     Arena arena = new Arena();
-    arena.adicionaTanque(new Tanque(400,50,180,Color.BLUE));
-    arena.adicionaTanque(new Tanque(400,200,0,Color.RED));
-    arena.adicionaTanque(new Tanque(400,300,270,Color.GREEN));
-    arena.adicionaTanque(new Tanque(200,50,90,Color.YELLOW));
-    arena.adicionaTanque(new Tanque(100,120,270,Color.GRAY));
-    arena.adicionaTanque(new Tanque(180,307,180,Color.WHITE));
-    arena.adicionaTanque(new Tanque(520,208,23,Color.CYAN));
-    arena.adicionaTanque(new Tanque(300,300,47,Color.ORANGE));
-    
     JFrame janela = new JFrame("JTank");
     janela.getContentPane().add(arena);
     janela.setResizable(false);

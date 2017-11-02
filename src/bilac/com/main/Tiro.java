@@ -3,9 +3,10 @@ package bilac.com.main;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class Tiro {
+public class Tiro implements Serializable {
   
   private Tanque tanque;
   

@@ -7,9 +7,10 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class Tanque {
+public class Tanque implements Serializable {
 
   private Color cor;
   private Tiro tiro;
