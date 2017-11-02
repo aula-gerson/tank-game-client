@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.io.PrintWriter;
 import java.util.HashSet;
 
 import javax.swing.JComponent;
@@ -24,8 +25,10 @@ public class Arena extends JComponent {
   private HashSet<Tanque> tanques;
   private Tanque tanqueSelecionado;
   
+  private PrintWriter writer;
+  
   public Arena(){
-    new Conexao().start();
+    new Conexao(this).start();
     this.tanques = new HashSet<Tanque>();
     addMouseListener(new EscutaClick(this));
     addKeyListener(new EscutaTeclado(this));
@@ -67,6 +70,8 @@ public class Arena extends JComponent {
       tanque.verificarColisaoComOsTanques(tanques);
       tanque.draw(g2d);
       Tanque tanqueAtingido = tanque.getTiro().verificarColisaoComOsTanques(tanques);
+      // TODO: Essa eliminação do tanque está alterando o própio array que ele esta interando
+      // causando erro no console. Pensar em uma forma melhor de resolver isso depois.
       tanques.remove(tanqueAtingido);
       tanque.getTiro().draw(g2d);
     }
@@ -113,6 +118,14 @@ public class Arena extends JComponent {
 
   public static int getAlturaArena() {
     return ALTURA_ARENA;
+  }
+
+  public PrintWriter getWriter() {
+    return writer;
+  }
+
+  public void setWriter(PrintWriter writer) {
+    this.writer = writer;
   }
  
 }
