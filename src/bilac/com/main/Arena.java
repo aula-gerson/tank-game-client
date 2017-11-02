@@ -67,12 +67,7 @@ public class Arena extends JComponent {
     for(int altura=0; altura <= ALTURA_ARENA; altura+=20) 
       g2d.drawLine(0, altura, LARGURA_ARENA, altura);
     for(Tanque tanque : this.tanques) {
-      tanque.verificarColisaoComOsTanques(tanques);
       tanque.draw(g2d);
-      Tanque tanqueAtingido = tanque.getTiro().verificarColisaoComOsTanques(tanques);
-      // TODO: Essa eliminação do tanque está alterando o própio array que ele esta interando
-      // causando erro no console. Pensar em uma forma melhor de resolver isso depois.
-      tanques.remove(tanqueAtingido);
       tanque.getTiro().draw(g2d);
     }
   }
