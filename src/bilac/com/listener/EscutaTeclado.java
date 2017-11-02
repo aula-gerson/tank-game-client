@@ -23,31 +23,26 @@ public class EscutaTeclado implements KeyListener {
         tanque.setEstaAtivo(true);
         switch(e.getKeyCode()){
           case KeyEvent.VK_A: {
-            tanque.girar(-10);
             getWriter().println("GIRAR_ANTI_HORARIO");
             getWriter().flush();
             break;
           }
           case KeyEvent.VK_D: {
-            tanque.girar(10);
             getWriter().println("GIRAR_HORARIO");
             getWriter().flush();
             break;
           }
           case KeyEvent.VK_W: {
-            tanque.aumentarVelocidade();
             getWriter().println("AUMENTAR_VELOCIDADE");
             getWriter().flush();
             break;
           }
           case KeyEvent.VK_S : {
-            tanque.diminuirVelocidade();
             getWriter().println("DIMINUIR_VELOCIDADE");
             getWriter().flush();
             break;
           }
           case KeyEvent.VK_SPACE: {
-            tanque.atirar();
             getWriter().println("ATIRAR");
             getWriter().flush();
             break;
