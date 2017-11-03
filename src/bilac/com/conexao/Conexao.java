@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 
 import bilac.com.main.Arena;
 import bilac.com.main.Tanque;
@@ -16,10 +14,12 @@ public class Conexao extends Thread {
   private Socket socket;
   private Arena arena;
   private ObjectInputStream reader;
-  
+  private Boolean firstTime;
+  private int playerId;
   
   public Conexao(Arena arena) {
     super();
+    this.firstTime = true;
     this.arena = arena;
   }
 
@@ -42,8 +42,19 @@ public class Conexao extends Thread {
       while((tanques = (List<Tanque>) reader.readObject()) != null) {
         this.arena.setTanques(tanques);
         this.arena.repaint();
+        selecionaTanque(tanques);
       }
     } catch (Exception e) { System.err.println(e.getMessage()); }
+  }
+  
+  private void selecionaTanque(List<Tanque> tanques) {
+    if(this.firstTime) {
+      this.playerId = tanques.size()-1;
+      this.firstTime = false;
+    }
+    Tanque player = tanques.get(playerId);
+    player.setCor(Color.BLUE);
+    player.setEstaAtivo(true);
   }
     
 }
