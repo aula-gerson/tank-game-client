@@ -6,7 +6,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -20,13 +22,13 @@ public class Arena extends JComponent {
   private static final int LARGURA_ARENA = 640;
   private static final int ALTURA_ARENA = 480;
 
-  private HashSet<Tanque> tanques;
+  private List<Tanque> tanques;
   private Tanque tanqueSelecionado;
   
   private PrintWriter writer;
   
   public Arena(){
-    this.tanques = new HashSet<Tanque>();
+    this.tanques = new ArrayList<Tanque>();
     addKeyListener(new EscutaTeclado(this));
     setFocusable(true);
     new Conexao(this).start();
@@ -73,11 +75,11 @@ public class Arena extends JComponent {
     janela.setDefaultCloseOperation(3);
   }
 
-  public HashSet<Tanque> getTanques() {
+  public List<Tanque> getTanques() {
     return tanques;
   }
 
-  public void setTanques(HashSet<Tanque> tanques) {
+  public void setTanques(List<Tanque> tanques) {
     this.tanques = tanques;
   }
 

@@ -9,6 +9,7 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 
 public class Tanque implements Serializable {
 
@@ -21,7 +22,13 @@ public class Tanque implements Serializable {
   private boolean estaAtivo;
   
   public Tanque(double x, double y, double angulo, Color cor) {
-
+    this.x = x; 
+    this.y = y; 
+    this.angulo = angulo;
+    this.cor = cor; 
+    this.velocidade = 5;
+    this.tiro = new Tiro(this, -10, -10, 0);
+    this.estaAtivo = false;
   }
 
   public void calculaTempo() {
@@ -36,7 +43,7 @@ public class Tanque implements Serializable {
   }
   
   public void diminuirVelocidade() {
-    if(this.velocidade > -5) this.velocidade--;
+    if(this.velocidade > 0) this.velocidade--;
   }
     
   public void girar(double angulo) {
@@ -58,7 +65,7 @@ public class Tanque implements Serializable {
     this.estaAtivo = estaAtivo;
   }
 
-  public void verificarColisaoComOsTanques(HashSet<Tanque> tanques) {
+  public void verificarColisaoComOsTanques(List<Tanque> tanques) {
     for(Tanque tanque : tanques) {
       if(tanque != this) {
         /*verifica a distancia para checar colisão entre os  tanques*/
