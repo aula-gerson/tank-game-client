@@ -57,14 +57,6 @@ public class Tanque implements Serializable {
   public void setEstaAtivo(boolean estaAtivo) {
     this.estaAtivo = estaAtivo;
   }
-  
-  public Shape pegarAreaClicavelDoTanque() {
-    AffineTransform at = new AffineTransform();
-    at.translate(this.x, this.y);
-    at.rotate(Math.toRadians(this.angulo));
-    Rectangle rect = new Rectangle(-24, -32, 48, 55);
-    return at.createTransformedShape(rect);
-  }
 
   public void verificarColisaoComOsTanques(HashSet<Tanque> tanques) {
     for(Tanque tanque : tanques) {

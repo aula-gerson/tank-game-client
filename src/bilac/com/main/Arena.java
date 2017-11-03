@@ -12,7 +12,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import bilac.com.conexao.Conexao;
-import bilac.com.listener.EscutaClick;
 import bilac.com.listener.EscutaTeclado;
 
 @SuppressWarnings("serial")
@@ -28,7 +27,6 @@ public class Arena extends JComponent {
   
   public Arena(){
     this.tanques = new HashSet<Tanque>();
-    addMouseListener(new EscutaClick(this));
     addKeyListener(new EscutaTeclado(this));
     setFocusable(true);
     new Conexao(this).start();
