@@ -21,13 +21,7 @@ public class Tanque implements Serializable {
   private boolean estaAtivo;
   
   public Tanque(double x, double y, double angulo, Color cor) {
-    this.x = x; 
-    this.y = y; 
-    this.angulo = angulo;
-    this.cor = cor; 
-    this.velocidade = 1;
-    this.tiro = new Tiro(this, -10, -10, 0);
-    this.estaAtivo = false;
+
   }
 
   public void calculaTempo() {
@@ -42,7 +36,7 @@ public class Tanque implements Serializable {
   }
   
   public void diminuirVelocidade() {
-    if(this.velocidade > 0) this.velocidade--;
+    if(this.velocidade > -5) this.velocidade--;
   }
     
   public void girar(double angulo) {

@@ -14,7 +14,6 @@ import javax.swing.JFrame;
 import bilac.com.conexao.Conexao;
 import bilac.com.listener.EscutaClick;
 import bilac.com.listener.EscutaTeclado;
-import bilac.com.listener.Render;
 
 @SuppressWarnings("serial")
 public class Arena extends JComponent {
@@ -28,16 +27,11 @@ public class Arena extends JComponent {
   private PrintWriter writer;
   
   public Arena(){
-    new Conexao(this).start();
     this.tanques = new HashSet<Tanque>();
     addMouseListener(new EscutaClick(this));
     addKeyListener(new EscutaTeclado(this));
-    new Render(this).start();
     setFocusable(true);
-  }
-  
-  public void adicionaTanque() {
-    this.tanques.add(new Tanque(400,50,180,Color.BLUE));
+    new Conexao(this).start();
   }
   
   public Dimension getMaximumSize() {
@@ -68,7 +62,6 @@ public class Arena extends JComponent {
       g2d.drawLine(0, altura, LARGURA_ARENA, altura);
     for(Tanque tanque : this.tanques) {
       tanque.draw(g2d);
-      tanque.getTiro().draw(g2d);
     }
   }
 

@@ -31,15 +31,17 @@ public class Conexao extends Thread {
       this.reader = new ObjectInputStream(socket.getInputStream());
       this.writer = new PrintWriter(socket.getOutputStream());
       this.arena.setWriter(writer);
-      escutaServidor();
+      escutaServidor(reader);
     } catch(Exception e){ System.err.println(e.getMessage()); }
   }
   
-  private void escutaServidor() {
+  @SuppressWarnings("unchecked")
+  private void escutaServidor(ObjectInputStream reader) {
     try {
       HashSet<Tanque> tanques;
-      while((tanques = (HashSet<Tanque>) this.reader.readObject()) != null) {
+      while((tanques = (HashSet<Tanque>) reader.readObject()) != null) {
         this.arena.setTanques(tanques);
+        this.arena.repaint();
       }
     } catch (Exception e) { System.err.println(e.getMessage()); }
   }
