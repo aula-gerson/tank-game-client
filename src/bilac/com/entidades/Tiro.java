@@ -1,4 +1,4 @@
-package bilac.com.main;
+package bilac.com.entidades;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

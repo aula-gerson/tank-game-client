@@ -14,6 +14,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import bilac.com.conexao.Conexao;
+import bilac.com.entidades.Tanque;
 import bilac.com.listener.EscutaTeclado;
 
 @SuppressWarnings("serial")

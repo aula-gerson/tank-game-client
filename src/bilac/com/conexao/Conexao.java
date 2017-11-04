@@ -6,8 +6,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
+import bilac.com.entidades.Tanque;
 import bilac.com.main.Arena;
-import bilac.com.main.Tanque;
 
 public class Conexao extends Thread {
   

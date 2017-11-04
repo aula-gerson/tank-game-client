@@ -1,4 +1,4 @@
-package bilac.com.main;
+package bilac.com.entidades;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

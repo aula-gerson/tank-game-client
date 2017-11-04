@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.PrintWriter;
 
+import bilac.com.entidades.Tanque;
 import bilac.com.main.Arena;
-import bilac.com.main.Tanque;
 
 public class EscutaTeclado implements KeyListener {
   
