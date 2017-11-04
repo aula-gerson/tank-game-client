@@ -17,41 +17,34 @@ public class EscutaTeclado implements KeyListener {
   
   @Override
   public void keyPressed(KeyEvent e) {
-    for(Tanque tanque : this.arena.getTanques()) {
-      tanque.setEstaAtivo(false);
-      if(tanque == this.arena.getTanqueSelecionado()) {
-        tanque.setEstaAtivo(true);
-        switch(e.getKeyCode()){
-          case KeyEvent.VK_A: {
-            getWriter().println("GIRAR_ANTI_HORARIO");
-            getWriter().flush();
-            break;
-          }
-          case KeyEvent.VK_D: {
-            getWriter().println("GIRAR_HORARIO");
-            getWriter().flush();
-            break;
-          }
-          case KeyEvent.VK_W: {
-            getWriter().println("AUMENTAR_VELOCIDADE");
-            getWriter().flush();
-            break;
-          }
-          case KeyEvent.VK_S : {
-            getWriter().println("DIMINUIR_VELOCIDADE");
-            getWriter().flush();
-            break;
-          }
-          case KeyEvent.VK_SPACE: {
-            getWriter().println("ATIRAR");
-            getWriter().flush();
-            break;
-          }
-        }
+    switch(e.getKeyCode()){
+      case KeyEvent.VK_A: {
+        getWriter().println("GIRAR_ANTI_HORARIO");
+        getWriter().flush();
         break;
       }
-      this.arena.repaint();
+      case KeyEvent.VK_D: {
+        getWriter().println("GIRAR_HORARIO");
+        getWriter().flush();
+        break;
+      }
+      case KeyEvent.VK_W: {
+        getWriter().println("AUMENTAR_VELOCIDADE");
+        getWriter().flush();
+        break;
+      }
+      case KeyEvent.VK_S : {
+        getWriter().println("DIMINUIR_VELOCIDADE");
+        getWriter().flush();
+        break;
+      }
+      case KeyEvent.VK_SPACE: {
+        getWriter().println("ATIRAR");
+        getWriter().flush();
+        break;
+      }
     }
+    this.arena.repaint();
   }
 
   @Override
