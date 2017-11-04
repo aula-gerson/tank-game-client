@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 
 public class Tiro implements Serializable {
   
@@ -24,8 +25,8 @@ public class Tiro implements Serializable {
 
   public void mover() {
     if(this.estaAtivo){
-      this.x += Math.sin(Math.toRadians(this.angulo)) * 10;
-      this.y -= Math.cos(Math.toRadians(this.angulo)) * 10;
+      this.x += Math.sin(Math.toRadians(this.angulo)) * 20;
+      this.y -= Math.cos(Math.toRadians(this.angulo)) * 20;
     }
     if(this.x < -5 || this.x >645 || this.y < -5 || this.y > 485) this.estaAtivo = false;
   }
@@ -46,7 +47,7 @@ public class Tiro implements Serializable {
     g2d.setTransform(antes);
   }
   
-  public Tanque verificarColisaoComOsTanques(HashSet<Tanque> tanques) {
+  public void verificarColisaoComOsTanques(List<Tanque> tanques) {
     if(this.estaAtivo){
       for(Tanque tanque : tanques) {
         double dist = Math.sqrt(Math.pow(this.x - tanque.getX(), 2) + Math.pow(this.y - tanque.getY(), 2));
@@ -55,13 +56,13 @@ public class Tiro implements Serializable {
             /*Distancia de acerto*/
             this.x = -10;
             this.y = -10;
-            this.estaAtivo = false;
-            return tanque;
+            tanque.setEstaVivo(false);
+            tanque.setContador(100);
+            tanque.setVelocidade(1);
           }
         }
       }
     }
-    return null;
   }
 
   public Tanque getTanque() {

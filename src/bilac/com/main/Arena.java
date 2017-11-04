@@ -62,6 +62,7 @@ public class Arena extends JComponent {
       g2d.drawLine(0, altura, LARGURA_ARENA, altura);
     for(Tanque tanque : this.tanques) {
       tanque.draw(g2d);
+      tanque.getTiro().draw(g2d);
     }
   }
 

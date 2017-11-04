@@ -20,6 +20,8 @@ public class Tanque implements Serializable {
   private double angulo;
   private double velocidade;
   private boolean estaAtivo;
+  private boolean estaVivo;
+  private int contador;
   
   public Tanque(double x, double y, double angulo, Color cor) {
     this.x = x; 
@@ -29,6 +31,8 @@ public class Tanque implements Serializable {
     this.velocidade = 5;
     this.tiro = new Tiro(this, -10, -10, 0);
     this.estaAtivo = false;
+    this.estaVivo = true;
+    this.contador = 10;
   }
 
   public void calculaTempo() {
@@ -39,19 +43,23 @@ public class Tanque implements Serializable {
   }
 
   public void aumentarVelocidade() {
+    if(!this.estaVivo) return;
     if(this.velocidade < 5) this.velocidade++;
   }
   
   public void diminuirVelocidade() {
+    if(!this.estaVivo) return;
     if(this.velocidade > 0) this.velocidade--;
   }
     
   public void girar(double angulo) {
+    if(!this.estaVivo) return;
     this.angulo += angulo;
     if(this.angulo >= 360) this.angulo = this.angulo - 360;
   }
   
   public void mover() {
+    if(!this.estaVivo) return;
     this.x += Math.sin(Math.toRadians(this.angulo)) * this.velocidade;
     this.y -= Math.cos(Math.toRadians(this.angulo)) * this.velocidade;
 
@@ -99,7 +107,8 @@ public class Tanque implements Serializable {
     //Aplicamos o sistema de coordenadas.
     g2d.transform(depois);
     //Desenhamos o tanque. Primeiro o corpo
-    g2d.setColor(cor);
+    if(this.estaVivo) g2d.setColor(cor);
+    else g2d.setColor(Color.BLACK);
     g2d.fillRect(-10, -12, 20, 24);
     //Agora as esteiras
     for(int i = -12; i <= 8; i += 4){
@@ -178,6 +187,22 @@ public class Tanque implements Serializable {
 
   public boolean isEstaAtivo() {
     return estaAtivo;
+  }
+
+  public boolean isEstaVivo() {
+    return estaVivo;
+  }
+
+  public void setEstaVivo(boolean estaVivo) {
+    this.estaVivo = estaVivo;
+  }
+
+  public int getContador() {
+    return contador;
+  }
+
+  public void setContador(int contador) {
+    this.contador = contador;
   }
   
 }
