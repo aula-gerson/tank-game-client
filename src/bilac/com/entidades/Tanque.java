@@ -13,75 +13,72 @@ import java.util.List;
 
 public class Tanque implements Serializable {
 
-  private Color cor;
   private Tiro tiro;
+  private Color cor;
   
-  private double x, y;
-  private double angulo;
-  private double velocidade;
-  private boolean estaAtivo;
-  private boolean estaVivo;
-  private int contador;
+  private String x, y;
+  private String angulo;
+  private String velocidade;
+  private String estaAtivo;
+  private String estaVivo;
+  private String contador;
   
   public Tanque(double x, double y, double angulo, Color cor) {
-    this.x = x; 
-    this.y = y; 
-    this.angulo = angulo;
-    this.cor = cor; 
-    this.velocidade = 5;
+    setX(x);
+    setY(y);
+    setAngulo(angulo);
+    setCor(cor);
+    setVelocidade(5);
+    setEstaAtivo(false);
+    setEstaVivo(true);
+    setContador(0);
     this.tiro = new Tiro(this, -10, -10, 0);
-    this.estaAtivo = false;
-    this.estaVivo = true;
-    this.contador = 10;
   }
-
+  
   public void calculaTempo() {
-    if(!this.estaAtivo) {
-      if(this.velocidade > 0) this.velocidade = 2;
-      else this.velocidade = -2;
+    if(!isEstaAtivo()) {
+      if(getVelocidade() > 0) setVelocidade(2);
+      else setVelocidade(-2);
     }
   }
 
   public void aumentarVelocidade() {
-    if(!this.estaVivo) return;
-    if(this.velocidade < 5) this.velocidade++;
+    if(!isEstaVivo()) return;
+    if(getVelocidade() < 5) setVelocidade(getVelocidade()+1);
   }
   
   public void diminuirVelocidade() {
-    if(!this.estaVivo) return;
-    if(this.velocidade > 0) this.velocidade--;
+    if(!isEstaVivo()) return;
+    if(getVelocidade() > 0) setVelocidade(getVelocidade()-1);;
   }
     
   public void girar(double angulo) {
-    if(!this.estaVivo) return;
-    this.angulo += angulo;
-    if(this.angulo >= 360) this.angulo = this.angulo - 360;
+    if(!isEstaVivo()) return;
+    setAngulo(getAngulo() + angulo);
+    if(getAngulo() >= 360) setAngulo(getAngulo() - 360);
+    if(getAngulo() < 0) setAngulo(getAngulo() + 360);
   }
   
   public void mover() {
-    if(!this.estaVivo) return;
-    this.x += Math.sin(Math.toRadians(this.angulo)) * this.velocidade;
-    this.y -= Math.cos(Math.toRadians(this.angulo)) * this.velocidade;
+    if(!isEstaVivo()) return;
+    setX(getX() + Math.sin(Math.toRadians(getAngulo())) * getVelocidade());
+    setY(getY() - Math.cos(Math.toRadians(getAngulo())) * getVelocidade());
 
     /* TODO: A forma de manter o tanque dentro da tela causava alguns bugs.
      * Então eu simplifiquei essa operação, mas ela precisa ser melhorada depois. */
-    if (this.x <= 30 || this.y <= 30 || this.y >= 450 || this.x >= 610)
-      this.velocidade *= -1;
+    if (getX() <= 30 || getY() <= 30 || getY() >= 450 || getX() >= 610)
+      setVelocidade(getVelocidade()*-1);
   }
   
-  public void setEstaAtivo(boolean estaAtivo) {
-    this.estaAtivo = estaAtivo;
-  }
-
   public void verificarColisaoComOsTanques(List<Tanque> tanques) {
     for(Tanque tanque : tanques) {
       if(tanque != this) {
         /*verifica a distancia para checar colisão entre os  tanques*/
-        double distanciaEntreOTanque = Math.sqrt(Math.pow(tanque.x - this.x, 2) + Math.pow(tanque.y - this.y, 2));
+        double distanciaEntreOTanque = Math.sqrt(Math.pow(tanque.getX() - getX(), 2) + Math.pow(tanque.getY() - getY(), 2));
         /*Colisão entre tanques*/
         if(distanciaEntreOTanque <= 30){
-          if(this.velocidade > 0) this.velocidade = 2;
-          this.velocidade *= -1;
+          if(getVelocidade() > 0) setVelocidade(2);
+          setVelocidade(getVelocidade()*-1);
           girar(10);
         }
       }
@@ -90,9 +87,9 @@ public class Tanque implements Serializable {
   
   public void atirar() {
     if(!this.tiro.isEstaAtivo()) {
-      this.tiro.setX(this.x);
-      this.tiro.setY(this.y);
-      this.tiro.setAngulo(this.angulo);
+      this.tiro.setX(getX());
+      this.tiro.setY(getY());
+      this.tiro.setAngulo(getAngulo());
       this.tiro.setEstaAtivo(true);
     }
   }
@@ -102,12 +99,12 @@ public class Tanque implements Serializable {
     AffineTransform antes = g2d.getTransform();
     //Criamos um sistema de coordenadas para o tanque.
     AffineTransform depois = new AffineTransform();
-    depois.translate(x, y);
-    depois.rotate(Math.toRadians(angulo));
+    depois.translate(getX(), getY());
+    depois.rotate(Math.toRadians(getAngulo()));
     //Aplicamos o sistema de coordenadas.
     g2d.transform(depois);
     //Desenhamos o tanque. Primeiro o corpo
-    if(this.estaVivo) g2d.setColor(cor);
+    if(isEstaVivo()) g2d.setColor(cor);
     else g2d.setColor(Color.BLACK);
     g2d.fillRect(-10, -12, 20, 24);
     //Agora as esteiras
@@ -126,7 +123,7 @@ public class Tanque implements Serializable {
     g2d.drawRect(-3, -25, 6, 25);
     //Se o tanque estiver ativo
     //Desenhamos uma margem
-    if(this.estaAtivo) {
+    if(isEstaAtivo()) {
       g2d.setColor(new Color(120,120,120));
       Stroke linha = g2d.getStroke();
       g2d.setStroke(new BasicStroke(1f,BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,0, new float[]{8},0));
@@ -154,54 +151,114 @@ public class Tanque implements Serializable {
   }
 
   public double getX() {
-    return x;
+    return Double.parseDouble(this.x);
+  }
+  
+  public String getXString() {
+    return this.x;
   }
 
   public void setX(double x) {
+    this.x = String.valueOf(x);
+  }
+  
+  public void setX(String x) {
     this.x = x;
   }
 
   public double getY() {
-    return y;
+    return Double.parseDouble(this.y);
   }
-
+  
+  public String getYString() {
+    return this.y;
+  }
+  
   public void setY(double y) {
+    this.y = String.valueOf(y);
+  }
+  
+  public void setY(String y) {
     this.y = y;
   }
 
   public double getAngulo() {
-    return angulo;
+    return Double.parseDouble(this.angulo);
+  }
+  
+  public String getAnguloString() {
+    return this.angulo;
   }
 
   public void setAngulo(double angulo) {
+    this.angulo = String.valueOf(angulo);
+  }
+  
+  public void setAngulo(String angulo) {
     this.angulo = angulo;
   }
 
   public double getVelocidade() {
-    return velocidade;
+    return Double.parseDouble(this.velocidade);
   }
 
+  public String getVelocidadeString() {
+    return this.velocidade;
+  }  
+  
   public void setVelocidade(double velocidade) {
+    this.velocidade = String.valueOf(velocidade);
+  }
+  
+  public void setVelocidade(String velocidade) {
     this.velocidade = velocidade;
   }
 
   public boolean isEstaAtivo() {
-    return estaAtivo;
+    return Boolean.parseBoolean(this.estaAtivo);
+  }
+  
+  public String isEstaAtivoString() {
+    return this.estaAtivo;
+  }
+  
+  public void setEstaAtivo(boolean estaAtivo) {
+    this.estaAtivo = String.valueOf(estaAtivo);
+  }
+  
+  public void setEstaAtivo(String estaAtivo) {
+    this.estaAtivo = estaAtivo;
   }
 
   public boolean isEstaVivo() {
-    return estaVivo;
+    return Boolean.parseBoolean(this.estaVivo);
+  }
+  
+  public String isEstaVivoString() {
+    return this.estaVivo;
   }
 
   public void setEstaVivo(boolean estaVivo) {
+    this.estaVivo = String.valueOf(estaVivo);
+  }
+  
+  public void setEstaVivo(String estaVivo) {
     this.estaVivo = estaVivo;
   }
 
   public int getContador() {
-    return contador;
+    return Integer.parseInt(this.contador);
+  }
+  
+  public String getContadorString() {
+    return this.contador;
   }
 
   public void setContador(int contador) {
+    this.contador = String.valueOf(contador);
+  }
+  
+  public void setContador(String contador) {
     this.contador = contador;
   }
   

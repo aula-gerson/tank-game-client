@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
+import bilac.com.encryption.Descrypt;
 import bilac.com.entidades.Tanque;
 import bilac.com.main.Arena;
 
@@ -40,6 +41,7 @@ public class Conexao extends Thread {
     try {
       List<Tanque> tanques;
       while((tanques = (List<Tanque>) reader.readObject()) != null) {
+        tanques = Descrypt.listaDeTanques(tanques, 124);
         this.arena.setTanques(tanques);
         this.arena.repaint();
         selecionaTanque(tanques);
