@@ -34,13 +34,6 @@ public class Tanque implements Serializable {
     setContador(0);
     this.tiro = new Tiro(this, 10, 10, 10);
   }
-  
-  public void calculaTempo() {
-    if(!isEstaAtivo()) {
-      if(getVelocidade() > 0) setVelocidade(2);
-      else setVelocidade(-2);
-    }
-  }
 
   public void aumentarVelocidade() {
     if(!isEstaVivo()) return;
@@ -49,7 +42,7 @@ public class Tanque implements Serializable {
   
   public void diminuirVelocidade() {
     if(!isEstaVivo()) return;
-    if(getVelocidade() > 0) setVelocidade(getVelocidade()-1);;
+    if(getVelocidade() > -3) setVelocidade(getVelocidade()-1);;
   }
     
   public void girar(double angulo) {
@@ -78,8 +71,7 @@ public class Tanque implements Serializable {
         /*Colisão entre tanques*/
         if(distanciaEntreOTanque <= 30){
           if(getVelocidade() > 0) setVelocidade(2);
-          setVelocidade(getVelocidade()*-1);
-          girar(10);
+          setVelocidade(-1);
         }
       }
     }
