@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import bilac.com.entidades.Tanque;
+import bilac.com.entidades.Tiro;
 
 public class Encrypt {
   
@@ -29,14 +30,20 @@ public class Encrypt {
     tanque.setX(eachLetterOfTheWord(tanque.getXString()));
     tanque.setY(eachLetterOfTheWord(tanque.getYString()));
     tanque.setAngulo(eachLetterOfTheWord(tanque.getAnguloString()));
-    if(tanque.getVelocidadeString().equals("-5.0")) {
-      System.out.println(tanque.getVelocidadeString());
-    }
     tanque.setVelocidade(eachLetterOfTheWord(tanque.getVelocidadeString()));
     tanque.setEstaAtivo(eachLetterOfTheWord(tanque.isEstaAtivoString()));
     tanque.setEstaVivo(eachLetterOfTheWord(tanque.isEstaVivoString()));
     tanque.setContador(eachLetterOfTheWord(tanque.getContadorString()));
+    tanque.setTiro(Encrypt.tiro(tanque.getTiro()));
     return tanque;
+  }
+  
+  public static Tiro tiro(Tiro tiro) {
+    tiro.setX(eachLetterOfTheWord(tiro.getXString()));
+    tiro.setY(eachLetterOfTheWord(tiro.getYString()));
+    tiro.setAngulo(eachLetterOfTheWord(tiro.getAnguloString()));
+    tiro.setEstaAtivo(eachLetterOfTheWord(tiro.isEstaAtivoString()));
+    return tiro;
   }
   
   private static String eachLetterOfTheWord(String word) {

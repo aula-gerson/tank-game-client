@@ -3,6 +3,7 @@ package bilac.com.encryption;
 import java.util.List;
 
 import bilac.com.entidades.Tanque;
+import bilac.com.entidades.Tiro;
 
 public class Descrypt {
   
@@ -31,7 +32,16 @@ public class Descrypt {
     tanque.setEstaAtivo(eachEncryptedLetter(tanque.isEstaAtivoString()));
     tanque.setEstaVivo(eachEncryptedLetter(tanque.isEstaVivoString()));
     tanque.setContador(eachEncryptedLetter(tanque.getContadorString()));
+    tanque.setTiro(Descrypt.tiro(tanque.getTiro()));
     return tanque;
+  }
+  
+  public static Tiro tiro(Tiro tiro) {
+    tiro.setX(eachEncryptedLetter(tiro.getXString()));
+    tiro.setY(eachEncryptedLetter(tiro.getYString()));
+    tiro.setAngulo(eachEncryptedLetter(tiro.getAnguloString()));
+    tiro.setEstaAtivo(eachEncryptedLetter(tiro.isEstaAtivoString()));
+    return tiro;
   }
   
   private static String eachEncryptedLetter(String encryptedWord) {

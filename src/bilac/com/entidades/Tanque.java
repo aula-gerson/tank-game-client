@@ -32,7 +32,7 @@ public class Tanque implements Serializable {
     setEstaAtivo(false);
     setEstaVivo(true);
     setContador(0);
-    this.tiro = new Tiro(this, -10, -10, 0);
+    this.tiro = new Tiro(this, 10, 10, 10);
   }
   
   public void calculaTempo() {

@@ -11,24 +11,24 @@ public class Tiro implements Serializable {
   
   private Tanque tanque;
   
-  private double x, y;
-  private double angulo;
-  private boolean estaAtivo;
+  private String x, y;
+  private String angulo;
+  private String estaAtivo;
   
   public Tiro(Tanque tanque, double x, double y, double angulo) {
     this.tanque = tanque;
-    this.x = x;
-    this.y = y;
-    this.angulo = angulo;
-    this.estaAtivo = false;
+    setX(x);
+    setY(y);
+    setAngulo(angulo);
+    setEstaAtivo(false);
   }
 
   public void mover() {
-    if(this.estaAtivo){
-      this.x += Math.sin(Math.toRadians(this.angulo)) * 20;
-      this.y -= Math.cos(Math.toRadians(this.angulo)) * 20;
+    if(isEstaAtivo()){
+      setX(getX() + Math.sin(Math.toRadians(getAngulo())) * 20);
+      setY(getY() - Math.cos(Math.toRadians(getAngulo())) * 20);
     }
-    if(this.x < -5 || this.x >645 || this.y < -5 || this.y > 485) this.estaAtivo = false;
+    if(getX() < -5 || getX() >645 || getY() < -5 || getY() > 485) setEstaAtivo(false);
   }
 
   public void draw(Graphics2D g2d) {
@@ -36,8 +36,8 @@ public class Tiro implements Serializable {
     AffineTransform antes = g2d.getTransform();
     //Criamos um sistema de coordenadas para o tanque.
     AffineTransform depois = new AffineTransform();
-    depois.translate(this.x, this.y);
-    depois.rotate(Math.toRadians(this.angulo));
+    depois.translate(getX(), getY());
+    depois.rotate(Math.toRadians(getAngulo()));
     //Aplicamos o sistema de coordenadas.
     g2d.transform(depois);
     //Desenhamos o missil
@@ -48,15 +48,15 @@ public class Tiro implements Serializable {
   }
   
   public void verificarColisaoComOsTanques(List<Tanque> tanques) {
-    if(this.estaAtivo){
+    if(isEstaAtivo()){
       for(Tanque tanque : tanques) {
-        double dist = Math.sqrt(Math.pow(this.x - tanque.getX(), 2) + Math.pow(this.y - tanque.getY(), 2));
+        double dist = Math.sqrt(Math.pow(getX() - tanque.getX(), 2) + Math.pow(getY() - tanque.getY(), 2));
         if(tanque != this.tanque) {
           if(dist <= 20){
             /*Distancia de acerto*/
-            this.x = -10;
-            this.y = -10;
-            this.setEstaAtivo(false);
+            setX(-10);
+            setY(-10);
+            setEstaAtivo(false);
             tanque.setEstaVivo(false);
             tanque.setContador(-100);
             tanque.setVelocidade(1);
@@ -75,34 +75,66 @@ public class Tiro implements Serializable {
   }
 
   public double getX() {
-    return x;
+    return Double.parseDouble(this.x);
+  }
+  
+  public String getXString() {
+    return this.x;
   }
 
   public void setX(double x) {
+    this.x = String.valueOf(x);
+  }
+  
+  public void setX(String x) {
     this.x = x;
   }
 
   public double getY() {
-    return y;
+    return Double.parseDouble(this.y);
+  }
+  
+  public String getYString() {
+    return this.y;
   }
 
   public void setY(double y) {
+    this.y = String.valueOf(y);
+  }
+  
+  public void setY(String y) {
     this.y = y;
   }
 
   public double getAngulo() {
-    return angulo;
+    return Double.parseDouble(this.angulo);
+  }
+  
+  public String getAnguloString() {
+    return this.angulo;
   }
 
   public void setAngulo(double angulo) {
-    this.angulo = angulo;
+    this.angulo = String.valueOf(angulo);
+  }
+  
+  public void setAngulo(String angulo) {
+    this.angulo = String.valueOf(angulo);
   }
 
   public boolean isEstaAtivo() {
-    return estaAtivo;
+    return Boolean.parseBoolean(this.estaAtivo);
+  }
+  
+  public String isEstaAtivoString() {
+    return this.estaAtivo;
   }
 
   public void setEstaAtivo(boolean estaAtivo) {
+    this.estaAtivo = String.valueOf(estaAtivo);
+  }
+  
+  public void setEstaAtivo(String estaAtivo) {
     this.estaAtivo = estaAtivo;
   }
   
