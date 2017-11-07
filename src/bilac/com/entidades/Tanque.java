@@ -71,7 +71,7 @@ public class Tanque implements Serializable {
         /*Colisão entre tanques*/
         if(distanciaEntreOTanque <= 30){
           if(getVelocidade() > 0) setVelocidade(2);
-          setVelocidade(-1);
+          setVelocidade(getVelocidade() * -1);
         }
       }
     }

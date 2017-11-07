@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.PrintWriter;
 
+import bilac.com.encryption.Encrypt;
 import bilac.com.entidades.Tanque;
 import bilac.com.main.Arena;
 
@@ -19,27 +20,27 @@ public class EscutaTeclado implements KeyListener {
   public void keyPressed(KeyEvent e) {
     switch(e.getKeyCode()){
       case KeyEvent.VK_A: {
-        getWriter().println("GIRAR_ANTI_HORARIO");
+        getWriter().println(Encrypt.text("GIRAR_ANTI_HORARIO", 124));
         getWriter().flush();
         break;
       }
       case KeyEvent.VK_D: {
-        getWriter().println("GIRAR_HORARIO");
+        getWriter().println(Encrypt.text("GIRAR_HORARIO", 124));
         getWriter().flush();
         break;
       }
       case KeyEvent.VK_W: {
-        getWriter().println("AUMENTAR_VELOCIDADE");
+        getWriter().println(Encrypt.text("AUMENTAR_VELOCIDADE", 124));
         getWriter().flush();
         break;
       }
       case KeyEvent.VK_S : {
-        getWriter().println("DIMINUIR_VELOCIDADE");
+        getWriter().println(Encrypt.text("DIMINUIR_VELOCIDADE", 124));
         getWriter().flush();
         break;
       }
       case KeyEvent.VK_SPACE: {
-        getWriter().println("ATIRAR");
+        getWriter().println(Encrypt.text("ATIRAR", 124));
         getWriter().flush();
         break;
       }
